@@ -177,7 +177,7 @@ const Features = (() => {
             });
         });
     }
-
+    
     return {reset, handleDependenciesForFeature, disableDependents, updateDefaults, applyDefaults, checkUncheckAll};
 })();
 
@@ -372,8 +372,8 @@ function createCategoryCard(category_name, options, expanded) {
     options_html = "";
     options.forEach(option => {
         options_html += '<div class="form-check">' +
-                            '<input class="form-check-input" type="checkbox" value="1" name="'+option['label']+'" id="'+option['label']+'" onclick="Features.handleDependenciesForFeature(this.id);">' +
-                            '<label class="form-check-label" for="'+option['label']+'">' +
+                            '<input class="form-check-input" type="checkbox" value="1" name="'+option['label']+'" id="'+option['label']+'" category-id="'+category_name+'" onclick="Features.handleDependenciesForFeature(this.id);">' +
+                            '<label class="form-check-label ms-2" for="'+option['label']+'">' +
                                 option['description'].replace(/enable/i, "") +
                             '</label>' +
                         '</div>';
@@ -383,9 +383,14 @@ function createCategoryCard(category_name, options, expanded) {
     let card_element = document.createElement('div');
     card_element.setAttribute('class', 'card ' + (expanded == true ? 'h-100' : ''));
     card_element.id = id_prefix + '_card';
-    card_element.innerHTML =    '<div class="card-header">' +
+    card_element.innerHTML =    '<div class="card-header ps-3">' +
                                     '<div class="d-flex justify-content-between">' +
-                                        '<span class="d-flex align-items-center"><strong>'+category_name+'</strong></span>' +
+                                        '<div class="d-inline-flex">' +
+                                            '<span class="align-middle me-3"><input class="form-check-input" type="checkbox" id="check-uncheck-category" category-id="'+category_name+'" onclick="checkUncheckCategory(this.getAttribute(\'category-id\'), this.checked);"></span>' +
+                                            '<strong>' +
+                                                '<label for="check-uncheck-category">' + category_name + '</label>' +
+                                            '</strong>' +
+                                        '</div>' +
                                         '<button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#'+id_prefix+'_collapse" aria-expanded="false" aria-controls="'+id_prefix+'_collapse">' +
                                             '<i class="bi bi-chevron-'+(expanded == true ? 'up' : 'down')+'" id="'+id_prefix+'_icon'+'"></i>' +
                                         '</button>' +
@@ -394,7 +399,7 @@ function createCategoryCard(category_name, options, expanded) {
     let collapse_element = document.createElement('div');
     collapse_element.setAttribute('class', 'feature-group collapse '+(expanded == true ? 'show' : ''));
     collapse_element.id = id_prefix + '_collapse';
-    collapse_element.innerHTML = '<div class="container-fluid px-2 py-2">'+options_html+'</div>';
+    collapse_element.innerHTML = '<div class="container-fluid px-3 py-2">'+options_html+'</div>';
     card_element.appendChild(collapse_element);
 
     // add relevent event listeners
@@ -406,7 +411,17 @@ function createCategoryCard(category_name, options, expanded) {
         card_element.classList.add('h-100');
         document.getElementById(id_prefix+'_icon').setAttribute('class', 'bi bi-chevron-up');
     });
+
     return card_element;                  
+}
+
+function checkUncheckCategory(categoryId, checked) {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((checkbox) => {
+        if (checkbox.getAttribute('category-id') === categoryId) {
+            checkbox.checked = checked;
+        }
+    });
 }
 
 function fillBuildOptions(buildOptions) {
