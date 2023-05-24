@@ -1,3 +1,4 @@
+const suggestions = []
 const Features = (() => {
     let features = {};
     let defines_dictionary = {};
@@ -22,6 +23,7 @@ const Features = (() => {
         features.forEach((category) => {
             category['options'].forEach((option) => {
                 option.category_name = category.name;
+                suggestions.push(option['description'].replace(/enable/i, "") + " " + option.category_name);
             });
         });
     }
@@ -248,6 +250,7 @@ const Features = (() => {
 
     return {reset, handleOptionStateChange, getCategoryIdByName, updateDefaults, applyDefaults, checkUncheckAll, checkUncheckCategory};
 })();
+
 
 var init_categories_expanded = false;
 

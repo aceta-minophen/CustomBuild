@@ -50,8 +50,35 @@
                 <div class="d-flex justify-content-between">
                     <span class="d-flex align-items-center"><i class="bi bi-hammer me-2"></i><strong>ADD NEW BUILD</strong></span>   
                     <div class="input-group w-25">
-                        <input class="form-control" type="text" placeholder="Filter options" aria-label="filter options">
-                    </div>
+                        <input id="search-input" class="form-control w-25" type="text" placeholder="Filter options" aria-label="filter options">
+                        <div id="suggestions-box" class="dropdown-menu"></div>
+                      </div>
+                      <style>
+                        .input-group {
+                        position: relative;
+                        }
+
+                        #suggestions-box.dropdown-menu {
+                        position: absolute;
+                        top: 100%;
+                        left: 0;
+                        z-index: 1;
+                        width: 100%;
+                        max-height: 200px; /* Adjust the maximum height as needed */
+                        overflow-y: auto;
+                        margin-top: 2px;
+                        border-radius: 0;
+                        }
+
+                        #suggestions-box .form-check {
+                        margin-left: 20px; /* Adjust the margin value as needed */
+                        }
+
+                        .dropdown-menu.show {
+                        display: block;
+                        }
+
+                      </style>                      
                 </div>
                 
             </div>
@@ -136,5 +163,6 @@
     </div>
   
     <script type="text/javascript" src="{{ url_for('static', filename='js/add_build.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/search.js')}}"></script>
 </body>
 </html>
